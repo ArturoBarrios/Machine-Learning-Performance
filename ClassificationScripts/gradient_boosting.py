@@ -20,7 +20,7 @@ def round_half_up(n, decimals=0):
 #read in data
 #musicIrisLowLevelFeaturesAll(best result so far)
 #music_IrisAmbroseCustom(second set of best results)
-data = pd.read_csv("./CSVFiles/trainfeatures.csv")
+data = pd.read_csv("data.csv")
 #describe data(mean,avg,std,etc)
 print(data.describe())
 
@@ -68,8 +68,8 @@ print(data.describe())
 #linear regression
 from sklearn.linear_model import LinearRegression
 reg = LinearRegression()
-labels = data['Artist']
-train1 = data.drop(['Artist'],axis = 1)
+labels = data['Composer']
+train1 = data.drop(['Composer'],axis = 1)
 
 
 from sklearn.model_selection import train_test_split
@@ -80,7 +80,7 @@ highest_accuracy = 0
 highest_accuracy_state = 0
 #while(random_state<1):
 #print("random state: ",random_state)
-x_train,x_test,y_train,y_test = train_test_split(train1,labels,test_size=.5,random_state=3)
+x_train,x_test,y_train,y_test = train_test_split(train1,labels,test_size=.5,random_state=5)
 print (x_train)
 reg.fit(x_train,y_train)
 print(reg.score(x_test,y_test))
@@ -92,12 +92,13 @@ from sklearn import ensemble
 #best result: n_estimators=1000,max_depth=5,min_samples_split=2,learning_rate=.1: accuracy .80 music_IrisCustomFeatures15LL(didn't have classical music)
 #best result: n_estimators=1000,max_depth=5,min_samples_split=2,learning_rate=.05: accuracy .86 music_IrisCustomFeatures15LL
 learning_rates = [.01,0.05, 0.1, 0.25, 0.5, 0.75, 1]
-estimators = 1000
+estimators = 200
 # for learning_rate in learning_rates:
 current_accuracy = 0
-clf = ensemble.GradientBoostingClassifier(n_estimators=estimators,max_depth=5,min_samples_split=5,learning_rate=.1)
+clf = ensemble.GradientBoostingClassifier(n_estimators=estimators,max_depth=2,min_samples_split=2,learning_rate=.1)
 clf.fit(x_train,y_train)
 y_pred = clf.predict(x_test)
+print(x_test.shape)
 current_accuracy = clf.score(x_test,y_test)
 # if current_accuracy>=highest_accuracy:
 #     highest_accuracy = current_accuracy
