@@ -80,7 +80,7 @@ highest_accuracy = 0
 highest_accuracy_state = 0
 #while(random_state<1):
 #print("random state: ",random_state)
-x_train,x_test,y_train,y_test = train_test_split(train1,labels,test_size=.5,random_state=5)
+x_train,x_test,y_train,y_test = train_test_split(train1,labels,test_size=.25,random_state=2)
 print (x_train)
 reg.fit(x_train,y_train)
 print(reg.score(x_test,y_test))
@@ -92,10 +92,10 @@ from sklearn import ensemble
 #best result: n_estimators=1000,max_depth=5,min_samples_split=2,learning_rate=.1: accuracy .80 music_IrisCustomFeatures15LL(didn't have classical music)
 #best result: n_estimators=1000,max_depth=5,min_samples_split=2,learning_rate=.05: accuracy .86 music_IrisCustomFeatures15LL
 learning_rates = [.01,0.05, 0.1, 0.25, 0.5, 0.75, 1]
-estimators = 200
+estimators = 50
 # for learning_rate in learning_rates:
 current_accuracy = 0
-clf = ensemble.GradientBoostingClassifier(n_estimators=estimators,max_depth=2,min_samples_split=2,learning_rate=.1)
+clf = ensemble.GradientBoostingClassifier(n_estimators=estimators,max_depth=4,min_samples_split=2,learning_rate=.1)
 clf.fit(x_train,y_train)
 y_pred = clf.predict(x_test)
 print(x_test.shape)
@@ -247,19 +247,19 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     return ax
 
 
-# np.set_printoptions(precision=2)
-#
-# y_pred_new = []
-# for y in y_pred:
-#     y_new = round_half_up(y,0)
-#     y_pred_new.append(y_new)
-#
-# # Plot non-normalized confusion matrix
-# plot_confusion_matrix(y_test, y_pred_new, classes=labels,
-#                       title='Confusion matrix, without normalization')
-#
-# # Plot normalized confusion matrix
-# plot_confusion_matrix(y_test, y_pred_new, classes=labels, normalize=True,
-#                       title='Normalized confusion matrix')
-#
-# plt.show()
+np.set_printoptions(precision=2)
+
+y_pred_new = []
+for y in y_pred:
+    y_new = round_half_up(y,0)
+    y_pred_new.append(y_new)
+
+# Plot non-normalized confusion matrix
+plot_confusion_matrix(y_test, y_pred_new, classes=labels,
+                      title='Confusion matrix, without normalization')
+
+# Plot normalized confusion matrix
+plot_confusion_matrix(y_test, y_pred_new, classes=labels, normalize=True,
+                      title='Normalized confusion matrix')
+
+plt.show()
