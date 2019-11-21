@@ -9,6 +9,8 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 import math
+from sklearn.model_selection import cross_val_score
+from sklearn.naive_bayes import GaussianNB
 
 def round_half_up(n, decimals=0):
     multiplier = 10 ** decimals
@@ -23,6 +25,9 @@ def round_half_up(n, decimals=0):
 data = pd.read_csv("data.csv")
 #describe data(mean,avg,std,etc)
 print(data.describe())
+
+
+
 
 ###################################################Linear Regression
 
@@ -42,31 +47,17 @@ highest_accuracy_state = 0
 #while(random_state<1):
 #print("random state: ",random_state)
 x_train,x_test,y_train,y_test = train_test_split(train1,labels,test_size=.25,random_state=2)
-print (x_train)
-reg.fit(x_train,y_train)
-print(reg.score(x_test,y_test))
 
 ###################################################Gradient Boosting Regression
 from sklearn import ensemble
 
-learning_rates = [.01,0.05, 0.1, 0.25, 0.5, 0.75, 1]
-estimators = 100
+
 # for learning_rate in learning_rates:
 current_accuracy = 0
-clf = ensemble.GradientBoostingClassifier(n_estimators=estimators,max_depth=4,min_samples_split=2,learning_rate=.1)
-clf.fit(x_train,y_train)
-y_pred = clf.predict(x_test)
-print(x_test.shape)
-current_accuracy = clf.score(x_test,y_test)
-# if current_accuracy>=highest_accuracy:
-#     highest_accuracy = current_accuracy
-#     highest_accuracy_state = random_state
-print("training score: ",clf.score(x_train,y_train),end=" ")
-print(current_accuracy)
-
-mse = mean_squared_error(y_test, clf.predict(x_test))
-print("MSE: %.4f" % mse)
-
+gnb = GaussianNB()
+scores = cross_val_score(gnb, train1, labels, cv=5)
+for score in scores:
+    print("score: ",score)
 
 
 
